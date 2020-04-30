@@ -8,7 +8,11 @@ import (
 
 //Config is a whole config
 type Config struct {
-	UserNames []string `json:"usernames"`
+	UserNames  []string `json:"usernames"`
+	Pushbullet struct {
+		APIkey      string `json:"APIkey"`
+		DeviceIdent string `json:"DeviceIdent"`
+	} `json:"pushbullet"`
 }
 
 //ReadFromFile reads file filename into Config struct

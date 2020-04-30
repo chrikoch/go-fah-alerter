@@ -1,1 +1,7 @@
-{"usernames": ["UserA", "UserB"]}
+{
+    "usernames": ["UserA", "UserB"],
+    "pushbullet": {
+        "APIkey": "abc",
+        "DeviceIdent": "def"
+    }
+}

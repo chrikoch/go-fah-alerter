@@ -4,13 +4,14 @@ import (
 	"compress/bzip2"
 	"encoding/csv"
 	"flag"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/chrikoch/go-fah-alerter/config"
+
+	pushb "github.com/xconstruct/go-pushbullet"
 )
 
 func main() {
@@ -26,23 +27,29 @@ func main() {
 	var c config.Config
 	err := c.ReadFromFile(configFilename)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 
-	fmt.Println(c)
+	log.Println(c)
+
+	pc := pushb.New(c.Pushbullet.APIkey)
+	err = pc.PushNote(c.Pushbullet.DeviceIdent, "hallo", "welt")
+	if err != nil {
+		log.Println(err)
+	}
 
 	client := http.Client{}
 	req, err := http.NewRequest("GET", "https://apps.foldingathome.org/daily_user_summary.txt.bz2", nil)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
 	log.Printf("START getting user summary list\n")
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -67,9 +74,9 @@ func main() {
 			break
 		}
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		} else if FindInSlice(c.UserNames, columns[0]) {
-			fmt.Println(columns)
+			log.Println(columns)
 		}
 	}
 }
