@@ -8,12 +8,14 @@ import (
 
 //Config is a whole config
 type Config struct {
-	UserNames  []string `json:"usernames"`
+	UserNames  UserNameList `json:"usernames"`
 	Pushbullet struct {
 		APIkey      string `json:"APIkey"`
 		DeviceIdent string `json:"DeviceIdent"`
 	} `json:"pushbullet"`
 }
+
+type UserNameList []string
 
 //ReadFromFile reads file filename into Config struct
 func (c *Config) ReadFromFile(filename string) error {
